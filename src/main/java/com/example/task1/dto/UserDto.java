@@ -1,16 +1,10 @@
 package com.example.task1.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jspecify.annotations.Nullable;
 
 import java.util.List;
-import java.util.Set;
 
-//@AllArgsConstructor
-//@NoArgsConstructor
 @Getter
 @Setter
 public class UserDto {
@@ -22,10 +16,6 @@ public class UserDto {
     private List<Long> favoriteBookIds;
 
     public UserDto(){
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {

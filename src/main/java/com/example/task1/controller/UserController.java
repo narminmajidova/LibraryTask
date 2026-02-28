@@ -3,6 +3,8 @@ package com.example.task1.controller;
 import com.example.task1.dto.UserDto;
 import com.example.task1.model.User;
 import com.example.task1.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,6 +18,15 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(
+            summary = "Get all users",
+            description = "Returns list of users",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+//    @GetMapping
+//    public List<User> getAllUsers() {
+//        return userService.getAll();
+//    }
     @PostMapping
     public UserDto create(@RequestBody UserDto userDto) {
         return userService.createUser(userDto);
