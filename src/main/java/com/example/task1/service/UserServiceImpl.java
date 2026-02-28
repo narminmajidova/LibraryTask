@@ -110,6 +110,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    public List<User> getAll() {
+        return List.of();
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 

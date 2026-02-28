@@ -17,4 +17,6 @@ public interface UserService {
     UserDto findByUsername(String username);
 
     List<UserDto> findAll();
+
+    List<User> getAll();
 }
