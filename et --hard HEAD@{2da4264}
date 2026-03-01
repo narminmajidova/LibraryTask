@@ -1,0 +1,22 @@
+[33m7d62a20[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: pull origin main --rebase (start): checkout 7d62a20d297de0ae670d14340bb610f511810231
+[33m51724e1[m[33m ([m[1;32mmain[m[33m)[m HEAD@{1}: commit (amend): Commit
+[33m477f73a[m HEAD@{2}: rebase (finish): returning to refs/heads/main
+[33m477f73a[m HEAD@{3}: rebase (finish): refs/heads/main onto 7d62a20d297de0ae670d14340bb610f511810231
+[33m477f73a[m HEAD@{4}: checkout: moving from 59f6764debe4501a9e61b6bcdf561427400a3941 to main
+[33m59f6764[m HEAD@{5}: reset: moving to 59f6764
+[33m7d62a20[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{6}: pull origin main --rebase (start): checkout 7d62a20d297de0ae670d14340bb610f511810231
+[33m477f73a[m HEAD@{7}: checkout: moving from 7d62a20d297de0ae670d14340bb610f511810231 to main
+[33m7d62a20[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{8}: pull origin main --rebase (start): checkout 7d62a20d297de0ae670d14340bb610f511810231
+[33m477f73a[m HEAD@{9}: rebase (abort): returning to refs/heads/main
+[33mfcc9b0a[m HEAD@{10}: commit: Update controllers, services and fix mappings
+[33m7d62a20[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{11}: pull origin main --rebase (start): checkout 7d62a20d297de0ae670d14340bb610f511810231
+[33m477f73a[m HEAD@{12}: commit (amend): Commit
+[33m2da4264[m HEAD@{13}: commit: Commit
+[33me2d26b0[m HEAD@{14}: commit (amend): First commit
+[33m7d62a20[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{15}: pull origin main --rebase (finish): returning to refs/heads/main
+[33m7d62a20[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{16}: pull origin main --rebase (pick): First commit
+[33m7a2edb5[m HEAD@{17}: pull origin main --rebase (start): checkout 7a2edb55ed2724f5eb52b52e2ab487e529ec6eba
+[33m59f6764[m HEAD@{18}: Branch: renamed refs/heads/main to refs/heads/main
+[33m59f6764[m HEAD@{20}: Branch: renamed refs/heads/main to refs/heads/main
+[33m59f6764[m HEAD@{22}: Branch: renamed refs/heads/master to refs/heads/main
+[33m59f6764[m HEAD@{24}: commit (initial): First commit
