@@ -23,10 +23,7 @@ public class UserController {
             description = "Returns list of users",
             security = @SecurityRequirement(name = "bearerAuth")
     )
-//    @GetMapping
-//    public List<User> getAllUsers() {
-//        return userService.getAll();
-//    }
+
     @PostMapping
     public UserDto create(@RequestBody UserDto userDto) {
         return userService.createUser(userDto);
