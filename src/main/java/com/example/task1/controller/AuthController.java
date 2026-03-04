@@ -2,10 +2,16 @@ package com.example.task1.controller;
 
 import com.example.task1.dto.AuthRequest;
 import com.example.task1.dto.AuthResponse;
-import com.example.task1.service.AuthenticationService;
+import com.example.task1.service.JwtService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import com.example.task1.dto.*;
+import com.example.task1.model.User;
+import com.example.task1.repository.UserRepository;
+import org.springframework.security.authentication.*;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api/auth")
@@ -13,20 +19,56 @@ import org.springframework.web.bind.annotation.*;
 
 public class AuthController {
 
-    private final AuthenticationService authenticationService;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
 
-    public AuthController( AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
+    public AuthController(AuthenticationManager authenticationManager,
+                          UserRepository userRepository,
+                          JwtService jwtService) {
+        this.authenticationManager = authenticationManager;
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(authenticationService.authenticate(request));
+    public AuthResponse login(@RequestBody AuthRequest request) {
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsername(),
+                        request.getPassword()
+                )
+        );
+
+        User user = userRepository
+                .findByUsername(request.getUsername())
+                .orElseThrow();
+
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        return new AuthResponse(accessToken, refreshToken);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-        authenticationService.register(request);
-        return ResponseEntity.ok("User registered successfully");
+    @PostMapping("/refresh")
+    public AuthResponse refresh(@RequestBody RefreshRequestDto request) {
+
+        var claims = jwtService.parse(request.getRefreshToken());
+
+        if (!"REFRESH".equals(claims.get("type"))) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        String username = claims.getSubject();
+
+        User user = userRepository
+                .findByUsername(username)
+                .orElseThrow();
+
+        String newAccessToken = jwtService.generateAccessToken(user);
+        String newRefreshToken = jwtService.generateRefreshToken(user);
+
+        return new AuthResponse(newAccessToken, newRefreshToken);
     }
 }

@@ -39,12 +39,15 @@ public class AuthenticationService {
                 )
         );
 
-        UserDetails user = userServiceImpl.loadUserByUsername(request.getUsername());
 
-        String jwtToken = jwtService.generateToken(user);
+        User user = userRepository
+                .findByUsername(request.getUsername())
+                .orElseThrow();
 
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
-        return new AuthResponse(jwtToken);
+        return new AuthResponse(accessToken, refreshToken);
     }
 
 
@@ -64,9 +67,10 @@ public class AuthenticationService {
                         List.of()
                 );
 
-        var jwtToken = jwtService.generateToken(userDetails);
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
-        return new AuthResponse(jwtToken);
+        return new AuthResponse(accessToken, refreshToken);
     }
 
 

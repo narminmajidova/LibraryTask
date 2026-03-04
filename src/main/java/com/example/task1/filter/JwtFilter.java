@@ -1,22 +1,22 @@
 package com.example.task1.filter;
 
 import com.example.task1.service.JwtService;
-import com.example.task1.service.UserService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -36,38 +36,46 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");
-        final String jwt;
+        String header = request.getHeader("Authorization");
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+        if (header != null && header.startsWith("Bearer ")) {
 
-        jwt = authHeader.substring(7);
+            String token = header.substring(7);
 
-        try {
-            Claims claims = jwtService.parse(token);
+            try {
+                Claims claims = jwtService.parse(token);
 
-            if (!"ACCESS".equals(claims.get("type"))) {
-                throw new RuntimeException("Only ACCESS tokens allowed");
+                if (!"ACCESS".equals(claims.get("type"))) {
+                    throw new RuntimeException("Only ACCESS tokens allowed");
+                }
+
+                String username = claims.getSubject();
+
+                String role = claims.get("role", String.class);
+                List<String> permissions = claims.get("permissions", List.class);
+
+                List<GrantedAuthority> authorities = new ArrayList<>();
+
+                authorities.add(new SimpleGrantedAuthority(role));
+
+                if (permissions != null) {
+                    permissions.forEach(p ->
+                            authorities.add(new SimpleGrantedAuthority(p)));
+                }
+
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                authorities
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(auth);
+
+            } catch (Exception e) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
-
-            String username = claims.getSubject();
-
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(
-                            username,
-                            null,
-                            Collections.emptyList()
-                    );
-
-            SecurityContextHolder.getContext().setAuthentication(auth);
-
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
         }
-        filterChain.doFilter(request, response);
         }
     }

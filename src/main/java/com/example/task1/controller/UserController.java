@@ -5,6 +5,7 @@ import com.example.task1.model.User;
 import com.example.task1.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -16,6 +17,29 @@ public class UserController {
 
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @RestController
+    @RequestMapping("/api/books")
+    public class BookController {
+
+        @PreAuthorize("hasRole('ADMIN')")
+        @PostMapping("/admin/create")
+        public String createBook() {
+            return "Book created by ADMIN";
+        }
+
+        @PreAuthorize("hasRole('AUTHOR')")
+        @PostMapping("/author/add")
+        public String addBook() {
+            return "Book added by AUTHOR";
+        }
+
+        @PreAuthorize("hasRole('USER')")
+        @GetMapping("/user/list")
+        public String listBooks() {
+            return "Books for USER";
+        }
     }
 
     @Operation(

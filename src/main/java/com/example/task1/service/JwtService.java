@@ -1,5 +1,6 @@
 package com.example.task1.service;
 
+import com.example.task1.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,10 +25,16 @@ public class JwtService {
         return Keys.hmacShaKeyFor(secret.getBytes());
     }
 
-    public String generateAccessToken(String username, String role) {
+    public String generateAccessToken(User user) {
+
         return Jwts.builder()
-                .setSubject(username)
-                .claim("role", role)
+                .setSubject(user.getUsername())
+                .claim("role", user.getRole().name())
+                .claim("permissions",
+                        user.getRole().getPermissions()
+                                .stream()
+                                .map(Enum::name)
+                                .toList())
                 .claim("type", "ACCESS")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpiration))
@@ -35,9 +42,9 @@ public class JwtService {
                 .compact();
     }
 
-    public String generateRefreshToken(String username) {
+    public String generateRefreshToken(User user) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
                 .claim("type", "REFRESH")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
