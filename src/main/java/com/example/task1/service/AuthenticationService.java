@@ -1,4 +1,5 @@
 package com.example.task1.service;
+import com.example.task1.Role;
 import com.example.task1.dto.AuthRequest;
 import com.example.task1.dto.AuthResponse;
 import com.example.task1.model.User;
@@ -56,8 +57,7 @@ public class AuthenticationService {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        userRepository.save(user);
-
+        user.setRole(Role.ROLE_USER);
         userRepository.save(user);
 
         UserDetails userDetails =
