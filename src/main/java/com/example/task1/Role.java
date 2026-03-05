@@ -1,6 +1,10 @@
 package com.example.task1;
 
 import com.example.task1.security.Permission;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 
 import java.util.Set;
 
@@ -22,8 +26,14 @@ public enum Role {
             Permission.BOOK_UPDATE,
             Permission.BOOK_DELETE
     ));
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_permission",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
 
-    private final Set<Permission> permissions;
+    private Set<Permission> permissions;
 
     Role(Set<Permission> permissions) {
         this.permissions = permissions;
