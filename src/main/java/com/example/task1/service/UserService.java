@@ -1,14 +1,10 @@
 package com.example.task1.service;
 
-import com.example.task1.dto.UserDto;
-import com.example.task1.model.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
+import com.example.task1.dto.UserDto;
+import java.util.Set;
 
 public interface UserService {
-    UserDto createUser(UserDto userDto);
 
     UserDto addFavoriteBook(String username, Long bookId);
 
@@ -16,7 +12,7 @@ public interface UserService {
 
     UserDto findByUsername(String username);
 
-    List<UserDto> findAll();
+    UserDto createUser(UserDto userDto);
 
-    List<User> getAll();
+    Set<UserDto> findAll();
 }

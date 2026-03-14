@@ -1,12 +1,9 @@
 package com.example.task1.controller;
 
 import com.example.task1.dto.UserDto;
-import com.example.task1.model.User;
 import com.example.task1.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -19,35 +16,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RestController
-    @RequestMapping("/api/books")
-    public class BookController {
-
-        @PreAuthorize("hasRole('ADMIN')")
-        @PostMapping("/admin/create")
-        public String createBook() {
-            return "Book created by ADMIN";
-        }
-
-        @PreAuthorize("hasRole('AUTHOR')")
-        @PostMapping("/author/add")
-        public String addBook() {
-            return "Book added by AUTHOR";
-        }
-
-        @PreAuthorize("hasRole('USER')")
-        @GetMapping("/user/list")
-        public String listBooks() {
-            return "Books for USER";
-        }
-    }
-
-    @Operation(
-            summary = "Get all users",
-            description = "Returns list of users",
-            security = @SecurityRequirement(name = "bearerAuth")
-    )
-
     @PostMapping
     public UserDto create(@RequestBody UserDto userDto) {
         return userService.createUser(userDto);
@@ -55,22 +23,23 @@ public class UserController {
 
     @PostMapping("/{username}/favorite/{bookId}")
     public UserDto addFavorite(@PathVariable String username,
-                            @PathVariable Long bookId) {
-       return userService.addFavoriteBook(username, bookId);
+                               @PathVariable Long bookId) {
+        return userService.addFavoriteBook(username, bookId);
     }
 
     @DeleteMapping("/{username}/favorite/{bookId}")
     public UserDto removeFavorite(@PathVariable String username,
-                               @PathVariable Long bookId) {
-       return userService.removeFavoriteBook(username, bookId);
+                                  @PathVariable Long bookId) {
+        return userService.removeFavoriteBook(username, bookId);
     }
 
     @GetMapping("/{username}")
     public UserDto findByUsername(@PathVariable String username) {
         return userService.findByUsername(username);
     }
-    @GetMapping
-    public List<UserDto> findAll() {
-        return userService.findAll();
-    }
+
+//    @GetMapping
+//    public List<UserDto> findAll() {
+//        return userService.findAll();
+//    }
 }
