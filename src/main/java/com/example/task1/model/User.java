@@ -5,7 +5,6 @@ import com.example.task1.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.persistence.Column;
-import org.jspecify.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
