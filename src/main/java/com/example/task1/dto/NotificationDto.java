@@ -17,7 +17,6 @@ public class NotificationDto {
         this.timestamp = timestamp;
     }
 
-    // Getters və Setters
     public Long getUserId() { return userId; }
     public void setUserId(Long userId) { this.userId = userId; }
 
