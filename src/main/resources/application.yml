@@ -6,7 +6,7 @@ jwt:
 
 spring:
   datasource:
-    url: jdbc:postgresql://host.docker.internal:5432/booksdb
+    url: jdbc:postgresql://localhost:5432/booksdb
     username: postgres
     password: narmin3007
   jpa:
@@ -35,4 +35,4 @@ spring:
 
 
 server:
-  port: 8082
+  port: 8083

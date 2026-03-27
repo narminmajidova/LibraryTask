@@ -76,9 +76,9 @@ services:
     container_name: library-postgres
     restart: always
     environment:
-      POSTGRES_DB: library_db
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_DB: booksdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: narmin3007
     ports:
       - "5432:5432"
     volumes:
