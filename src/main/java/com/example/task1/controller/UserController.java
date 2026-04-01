@@ -1,6 +1,7 @@
 package com.example.task1.controller;
 
 import com.example.task1.dto.UserDto;
+import com.example.task1.model.User;
 import com.example.task1.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +39,8 @@ public class UserController {
         return userService.findByUsername(username);
     }
 
-//    @GetMapping
-//    public List<UserDto> findAll() {
-//        return userService.findAll();
-//    }
+    @GetMapping("/find/{id}")
+    public User findById(@PathVariable Long id) {
+        return userService.getById(id);
+    }
 }

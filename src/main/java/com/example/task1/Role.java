@@ -6,9 +6,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public enum Role {
+public enum Role implements Serializable {
 
     ROLE_USER(Set.of(
             Permission.BOOK_READ

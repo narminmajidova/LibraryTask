@@ -5,12 +5,14 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
+import java.io.Serializable;
 
-    @Entity
+
+@Entity
     @Table(name="Books")
 
 
-    public class Book {
+    public class Book implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
