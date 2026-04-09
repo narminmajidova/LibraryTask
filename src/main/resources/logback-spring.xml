@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- Default Spring Boot logback settings -->
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <!-- Application properties -->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+    <property name="LOG_PATH" value="logs"/>
+
+    <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${APP_NAME}/${APP_NAME}.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}/archived/${APP_NAME}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+            <maxHistory>15</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp/>
+                <version/>
+                <logLevel/>
+                <loggerName/>
+                <threadName/>
+                <message/>
+                <mdc/>
+                <stackTrace/>
+                <pattern>
+                    <pattern>{ "service": "${APP_NAME}" }</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- ========================
+         CONSOLE APPENDER
+         ======================== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========================
+         LOG LEVEL CONFIGURATION
+         ======================== -->
+    <!-- Spring & Hibernate INFO loglarını kəs -->
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+
+    <!-- Application logları: INFO səviyyəsində, yalnız əməliyyat mesajları -->
+    <logger name="com.yourcompany" level="INFO" additivity="false">
+        <appender-ref ref="JSON_FILE"/>
+    </logger>
+
+    <!-- Root logger: WARN və ERROR logları console və file-dən çıxsın -->
+    <root level="WARN">
+        <appender-ref ref="JSON_FILE"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
